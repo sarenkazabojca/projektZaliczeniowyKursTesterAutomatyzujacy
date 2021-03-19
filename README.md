@@ -1,0 +1,1 @@
+ściagnąć [chrome driver](https://chromedriver.chromium.org/downloads) do katologu "src/main/resources/drivers/chromedriver.exe"
