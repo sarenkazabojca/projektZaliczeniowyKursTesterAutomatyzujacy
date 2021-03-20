@@ -17,4 +17,4 @@ Feature: my store - order
     When user submit on payment page
     When user make screenshot with order details
     Then user made proper order
-    And  close browser
+#    And  close browser

@@ -56,7 +56,6 @@ public class projektZaliczeniowy{
         createNewAddress.click();
     }
 
-
     @When("user inputs (.*), (.*), (.*), (.*), (.*) to address form")
     public void userInputsProperAddressData(String address, String city, String postalCode, String country,  String phone){
         createNewAddressPage newAddress = new createNewAddressPage(driver);
@@ -84,6 +83,7 @@ public class projektZaliczeniowy{
         homePage.searchOurCatalog("Hummingbird Printed Sweater");
     }
 
+//  wyświetlana nazwa produktu inna niż w document object
     @When("^user choose 'Hummingbird Printed Sweater' in search result$")
     public void userChooseProductInSearchResult() {
         WebElement chooseProduct = driver.findElement(By.xpath("//*[text()='Hummingbird printed sweater']"));
@@ -163,7 +163,8 @@ public class projektZaliczeniowy{
 
     @Then("^user made proper order$")
     public void userMadeProperOrder() {
-//        Jak to zrobić?????? 
+        WebElement confirmedOrder = driver.findElement(By.cssSelector("#content-hook_order_confirmation > div > div > div > h3"));
+        Assert.assertEquals("YOUR ORDER IS CONFIRMED", confirmedOrder.getText());
     }
 
     @And("^close browser$")
