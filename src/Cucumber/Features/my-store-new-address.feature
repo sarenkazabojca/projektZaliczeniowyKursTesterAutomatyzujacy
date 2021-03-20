@@ -7,7 +7,7 @@ Feature: my store - adding a new address
     When user inputs <address>, <city>, <postalCode>, <country>, <phone> to address form
     When user clicks 'Save' button
     Then user added a new proper address
-#    And  close browser
+    And  close browser
 
     Examples:
     |address                     |city       |postalCode |country       |phone       |
