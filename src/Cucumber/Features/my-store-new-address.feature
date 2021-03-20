@@ -1,8 +1,7 @@
 Feature: my store - adding a new address
   Scenario Outline: user can add new address to account
-    Given user is on log in page
-    When user inputs proper log in data
-    When user clicks 'Sign In' button
+    Given user is on login page
+    When user makes proper login
     When user clicks 'Addresses' tile
     When user clicks '+Create new address' button
     When user inputs <address>, <city>, <postalCode>, <country>, <phone> to address form

@@ -12,26 +12,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-
+import pageObjectPattern.pages.HomePage;
+import pageObjectPattern.pages.LoginPage;
+import pageObjectPattern.pages.createNewAddressPage;
 
 public class projektZaliczeniowy{
 
-//    String name = "Marcelina";
-//    String surname = "Sokolowska";
-//    String email = "MarcelinaSokolowska@jourrapide.com";
-//    String password = "aeC9Oich1ee";
+    private static WebDriver driver;
 
-protected WebDriver driver;
-
-    @Given("user is on log in page")
-        public void openLogInPage(){
+    @Given("user is on login page")
+    public void openLogInPage(){
         System.setProperty("webdriver.chrome.driver",
                 "src/main/resources/drivers/chromedriver.exe");
         driver = new ChromeDriver();
@@ -41,21 +37,11 @@ protected WebDriver driver;
         driver.get("https://prod-kurs.coderslab.pl/index.php?controller=authentication&back=my-account");
     }
 
-    @When("^user inputs proper log in data$")
+    @When("^user makes proper login$")
     public void userInputLogInData() {
-        WebElement email = driver.findElement(By.name("email"));
-        email.clear();
-        email.sendKeys("MarcelinaSokolowska@jourrapide.com");
-
-        WebElement password = driver.findElement(By.name("password"));
-        password.clear();
-        password.sendKeys("aeC9Oich1ee");
-    }
-
-    @When("^user clicks 'Sign In' button$")
-    public void userClicksSignInButton() {
-        WebElement signIn = driver.findElement(By.id("submit-login"));
-        signIn.click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.loginAs("MarcelinaSokolowska@jourrapide.com", "aeC9Oich1ee");
+        Assert.assertEquals("Marcelina Sokołowska", loginPage.getLoggedUsername());
     }
 
     @When("^user clicks 'Addresses' tile$")
@@ -70,27 +56,11 @@ protected WebDriver driver;
         createNewAddress.click();
     }
 
+
     @When("user inputs (.*), (.*), (.*), (.*), (.*) to address form")
     public void userInputsProperAddressData(String address, String city, String postalCode, String country,  String phone){
-
-        WebElement inputAddress = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/form/section/div[6]/div[1]/input"));
-        inputAddress.clear();
-        inputAddress.sendKeys(address);
-
-        WebElement inputCity = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/form/section/div[8]/div[1]/input"));
-        inputCity.clear();
-        inputCity.sendKeys(city);
-
-        WebElement inputPostalCode = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/form/section/div[9]/div[1]/input"));
-        inputPostalCode.clear();
-        inputPostalCode.sendKeys(postalCode);
-
-        WebElement selectCountry = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/form/section/div[10]/div[1]/select"));
-        new Select(selectCountry).selectByVisibleText(country);
-
-        WebElement inputPhone = driver.findElement(By.xpath("//*[@id=\"content\"]/div/div/form/section/div[11]/div[1]/input"));
-        inputPhone.clear();
-        inputPhone.sendKeys(phone);
+        createNewAddressPage newAddress = new createNewAddressPage(driver);
+        newAddress.createNewAddress(address, city, postalCode, country, phone);
     }
 
     @When("^user clicks 'Save' button$")
@@ -102,25 +72,22 @@ protected WebDriver driver;
 //  Sprawdzenie czy dodanie adresu się powiodło
     @Then("^user added a new proper address$")
     public void userHasAddedANewAddress() {
-        WebElement successfulMessage = driver.findElement(By.cssSelector("#notifications > div > article"));
-        String expectedMessage = "Address successfully added!";
-        Assert.assertEquals(successfulMessage.getText(), expectedMessage);
+        createNewAddressPage addressPage = new createNewAddressPage(driver);
+        Assert.assertEquals("Address successfully added!", addressPage.getSuccessfulMessage());
     }
 
+//Zad2||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     @When("^user search in catalog 'Hummingbird Printed Sweater'$")
     public void userSearchProductInCatalog() {
-        WebElement searchProduct = driver.findElement(By.name("s"));
-        searchProduct.clear();
-        searchProduct.sendKeys("Hummingbird Printed Sweater");
-        searchProduct.submit();
+        HomePage homePage = new HomePage(driver);
+        homePage.searchOurCatalog("Hummingbird Printed Sweater");
     }
 
     @When("^user choose 'Hummingbird Printed Sweater' in search result$")
     public void userChooseProductInSearchResult() {
         WebElement chooseProduct = driver.findElement(By.xpath("//*[text()='Hummingbird printed sweater']"));
         chooseProduct.click();
-
     }
 
     @When("^user choose size 'M'$")
@@ -196,6 +163,7 @@ protected WebDriver driver;
 
     @Then("^user made proper order$")
     public void userMadeProperOrder() {
+//        Jak to zrobić?????? 
     }
 
     @And("^close browser$")

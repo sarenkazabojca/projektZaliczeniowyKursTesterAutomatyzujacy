@@ -1,9 +1,8 @@
 Feature: my store - order
 
   Scenario: user can order products
-    Given user is on log in page
-    When user inputs proper log in data
-    When user clicks 'Sign In' button
+    Given user is on login page
+    When user makes proper login
     When user search in catalog 'Hummingbird Printed Sweater'
     When user choose 'Hummingbird Printed Sweater' in search result
     When user choose size 'M'
@@ -18,3 +17,4 @@ Feature: my store - order
     When user submit on payment page
     When user make screenshot with order details
     Then user made proper order
+    And  close browser
